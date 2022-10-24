@@ -1,5 +1,4 @@
 import React, { useState} from "react";
-import { Navigate, redirect } from "react-router-dom";
 import { Button, Form, Input, Message, Icon } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import factory from "../factory";
@@ -12,6 +11,7 @@ const INITIAL_TRANSACTION_STATE = {
 };
 
 function NewPage() {
+  const navigate=useNavigate();
   const [minumumContribution, setMinimumContribution] = useState("");
   const [transactionState, setTransactionState] = useState(
     INITIAL_TRANSACTION_STATE
@@ -19,22 +19,20 @@ function NewPage() {
   const { loading, error, success } = transactionState;
 
   const onSubmit = async (event) => {
-    console.log('sumbmitting');
     event.preventDefault();
     setTransactionState({
       ...INITIAL_TRANSACTION_STATE,
       loading: "Transaction is processing....",
     });
-    console.log('passed transaction passing phase 1')
     const accounts = await web3.eth.getAccounts();
     await factory.methods
       .createCampaign(minumumContribution)
       .send({
         //no need to specify gas amount -metamask does this
         from: accounts[0],
+        gas:"1000000"
       })
       .then((res) => {
-        console.log(res);
         const etherscanLink = `https://rinkeby.etherscan.io/tx/${res.transactionHash}`;
         setTransactionState({
           ...INITIAL_TRANSACTION_STATE,
@@ -44,8 +42,7 @@ function NewPage() {
             </a>
           ),
         });
-        console.log('passed');
-        redirect('/');
+        navigate(`/`);
       })
       .catch((err) => {
         console.log(err);

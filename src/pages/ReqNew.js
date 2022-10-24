@@ -3,7 +3,7 @@ import { Form, Button, Message, Icon, Input } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import web3 from "../web3";
 import Campaign from "../campaign";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const INITIAL_TRANSACTION_STATE = {
   loading: "",
@@ -13,6 +13,7 @@ const INITIAL_TRANSACTION_STATE = {
 
 function ReqNew() {
   const { address } = useParams();
+  const navigate=useNavigate();
 
   const [formData, setFormData] = useState({
     description: "",
@@ -47,6 +48,7 @@ function ReqNew() {
         )
         .send({
           from: accounts[0],
+          gas:"1000000"
         })
         .then((res) => {
           console.log(res);
@@ -59,6 +61,7 @@ function ReqNew() {
               </a>
             ),
           });
+          navigate(`/campaigns/requests/${address}`);
         })
         .catch((err) => {
           console.log(err);

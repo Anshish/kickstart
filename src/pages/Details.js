@@ -74,17 +74,13 @@ function Details() {
       <h1>Campaign Details</h1>
       <Grid>
         <Grid.Row>
-          <Grid.Column width={10}>
+          <Grid.Column width={20}>
             <Card.Group items={items}></Card.Group>
-          </Grid.Column>
-
-          <Grid.Column width={6}>
-            <Contribute campaignAddress={address} />
           </Grid.Column>
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column>
+          <Grid.Column width={4}>
             <Link to={`/campaigns/requests/${address}`}>
               <Button
                 color="blue"
@@ -93,6 +89,14 @@ function Details() {
                 Show Requests
               </Button>
             </Link>
+          </Grid.Column>
+          <Grid.Column style={{marginLeft:'20px' }} width={9}>
+          <Link to={`/campaigns/requests/contribute/${address}`}>
+          <Button size="large">
+              Want to contribute?
+            </Button>
+          </Link>
+            
           </Grid.Column>
         </Grid.Row>
       </Grid>

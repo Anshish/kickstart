@@ -6,6 +6,7 @@ import NewPage  from "./pages/NewPage";
 import Details from './pages/Details';
 import Requests from './pages/Requests';
 import ReqNew from './pages/ReqNew';
+import Contribute from './pages/Contribute';
 
 function App(){
   return(
@@ -17,6 +18,7 @@ function App(){
           <Route path="/campaigns/:address" element={<Details />} />
           <Route path="/campaigns/requests/:address" element={<Requests />} />
           <Route path="/campaigns/requests/new/:address" element={<ReqNew />} />
+          <Route path="/campaigns/requests/contribute/:address" element={<Contribute />} />
         </Routes>
       </BrowserRouter>
     </div>

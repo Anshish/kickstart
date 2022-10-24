@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Input, Button, Message, Icon } from "semantic-ui-react";
 import Campaign from "../campaign";
+import Layout from "../components/Layout";
 import web3 from "../web3";
 
 const INITIAL_TRANSACTION_STATE = {
@@ -10,7 +11,9 @@ const INITIAL_TRANSACTION_STATE = {
   success: "",
 };
 
-function Contribute({campaignAddress}) {
+function Contribute() {
+  const { address } = useParams();
+  console.log({ address });
   const navigate = useNavigate();
 
   const [contribution, setContribution] = useState("");
@@ -22,8 +25,8 @@ function Contribute({campaignAddress}) {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    const campaign = Campaign( campaignAddress );
-    console.log(campaign)
+    const campaign = Campaign({ address });
+    console.log(campaign);
     setTransactionState({
       ...INITIAL_TRANSACTION_STATE,
       loading: "Transaction is processing....",
@@ -47,7 +50,7 @@ function Contribute({campaignAddress}) {
               </a>
             ),
           });
-          navigate(`/campaigns/requests/${campaignAddress}`);
+          navigate(`/campaigns/requests/${address}`);
         })
         .catch((err) => {
           console.log(err);
@@ -87,26 +90,27 @@ function Contribute({campaignAddress}) {
 
   return (
     <div>
-      <Form onSubmit={onSubmit}>
-        <Form.Field>
-          <label>{`Contribute to Campaign: ${campaignAddress}`}</label>
-          <Input
-            label="ether"
-            labelPosition="right"
-            placeholder={`Amount to contribute to Campaign: ${campaignAddress}`}
-            focus
-            type="number" // enforce number only content
-            min="0" //enforce positive numbers only
-            disabled={Boolean(loading)} //disable input if loading
-            value={contribution}
-            onChange={(e) => setContribution(e.target.value)}
-          />
-        </Form.Field>
-        <Button color="blue" disabled={Boolean(loading)} size="large">
-          Contribute
-        </Button>
-      </Form>
-      {Boolean(loading || error || success) && renderMessage()}
+      <Layout>
+        <Form onSubmit={onSubmit}>
+          <Form.Field>
+            <label>{`Contribute to Campaign: ${address}`}</label>
+            <Input
+              label="ether"
+              labelPosition="right"
+              placeholder={`Amount to contribute to Campaign: ${address}`}
+              focus
+              min="0" //enforce positive numbers only
+              disabled={Boolean(loading)} //disable input if loading
+              value={contribution}
+              onChange={(e) => setContribution(e.target.value)}
+            />
+          </Form.Field>
+          <Button color="blue" disabled={Boolean(loading)} size="large">
+            Contribute
+          </Button>
+        </Form>
+        {Boolean(loading || error || success) && renderMessage()}
+      </Layout>
     </div>
   );
 }

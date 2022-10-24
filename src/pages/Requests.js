@@ -63,6 +63,7 @@ function Requests() {
         .approveRequest(parseInt(id))
         .send({
           from: accounts[0],
+          gas:"1000000"
         })
         .then((res) => {
           console.log(res);
@@ -105,6 +106,7 @@ function Requests() {
         .finalizeRequest(parseInt(id))
         .send({
           from: accounts[0],
+          gas:"1000000"
         })
         .then((res) => {
           console.log(res);
@@ -163,6 +165,7 @@ function Requests() {
     { approvalCount, complete, description, recipient, value },
     index
   ) => {
+    console.log(index);
     return (
       <Row key={index} textAlign="center" disabled={complete}>
         <Cell>{index}</Cell>
